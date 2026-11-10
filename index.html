@@ -62,6 +62,15 @@ section.c h2{font-size:clamp(30px,4.6vw,50px);line-height:1.08;margin:.2em 0 .4e
 footer{max-width:1040px;margin:70px auto 0;padding:28px 22px 60px;border-top:1px solid var(--ln);color:var(--mut);font-size:13px}
 @media (prefers-reduced-motion:reduce){#hero img{animation:none}}
 .vsec{max-width:1040px;margin:0 auto;padding:64px 22px 8px}.vsec h2{font-size:clamp(28px,4.2vw,44px);line-height:1.1;margin:.2em 0 .3em}.vbox{margin-top:20px;border-radius:14px;overflow:hidden;background:#000;border:1px solid var(--ln)}.vbox video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#000}
+.pre{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 4px}.pre button{border:1px solid var(--ln);background:var(--card);color:var(--ink);border-radius:99px;padding:10px 16px;font:600 13px system-ui;cursor:pointer;touch-action:manipulation}.pre button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}.pre button.rs{margin-left:auto;background:transparent;color:var(--mut)}
+.calc input[type=range]{height:30px;margin:2px 0 0}
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}.kpi .card{padding:14px 16px}.kpi .big{font-size:26px}
+.stk{display:flex;height:46px;border-radius:10px;overflow:hidden;margin-top:12px;background:var(--ln)}.stk i{display:block;height:100%;transition:width .2s}
+.lg{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:12px;font-size:12px;color:var(--mut)}.lg span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:var(--c)}
+a.br{color:inherit;text-decoration:none}a.br:hover span:first-child{text-decoration:underline}
+.zl{color:var(--wood);font-weight:600}a.zl{text-decoration:none}a.zl:hover{text-decoration:underline}
+.trk i{transition:width .2s}tr.lk{cursor:pointer}tr.lk:hover td{background:rgba(173,127,82,.08)}
+td:first-child a,td:nth-child(4){white-space:nowrap}th{white-space:nowrap}#vd{margin:16px 0 0;font-size:15px}#short{color:var(--bad);font-size:13px;min-height:18px;margin-top:6px}
 </style></head><body>
 
 <header id="hero">
@@ -72,10 +81,6 @@ footer{max-width:1040px;margin:70px auto 0;padding:28px 22px 60px;border-top:1px
 <button class="btn" id="go">▶ Begin the flythrough</button></div>
 </header>
 
-<section class="vsec" id="film"><div class="sm">Watch</div><h2 class="serif">The renovation, start to finish.</h2>
-<p class="lead">A 90-second flythrough with the before and after at every stop. No sound. Press play, or scroll down for the interactive version.</p>
-<div class="vbox"><video src="flythrough.mp4" controls muted playsinline preload="metadata" aria-label="323 East Street renovation flythrough, no audio"></video></div></section>
-
 <div id="fly"><div id="stage">
 <div class="hud tl"><span class="rec"></span>Drone cam 01 · 323 East St</div>
 <div class="hud tr"><span id="zone"></span><br><span id="alt"></span></div>
@@ -85,41 +90,45 @@ footer{max-width:1040px;margin:70px auto 0;padding:28px 22px 60px;border-top:1px
 </div></div>
 
 <section class="c" id="deal">
-<div class="sm">The deal</div>
-<h2 class="serif">Buy carefully. Spend first on what protects the home.</h2>
-<p class="lead">A cash offer below the $370,000 ask, a $75,000 renovation reserve, and a renovated value tested between $400,000 and $450,000.</p>
-<div class="stats">
-<div class="card"><div class="sm">Cash offer range</div><div class="big serif">$300–310K</div><div class="sm">vs. $370K asking</div></div>
-<div class="card"><div class="sm">Renovation reserve</div><div class="big serif">$75K</div><div class="sm">test $60–90K</div></div>
-<div class="card"><div class="sm">Renovated value</div><div class="big serif">$425K</div><div class="sm">range $400–450K</div></div>
-</div>
-<div class="card calc"><div>
-<div class="sm">Try your own numbers</div>
-<label>Purchase price <b id="pv"></b></label><input id="p" type="range" min="290000" max="320000" step="5000" value="305000">
-<label>Renovation spend <b id="rv"></b></label><input id="r" type="range" min="60000" max="110000" step="5000" value="75000">
-<label>Resale price <b id="vv"></b></label><input id="v" type="range" min="380000" max="470000" step="5000" value="425000">
+<div class="sm">The deal · play with it</div>
+<h2 class="serif">Move the numbers. See what the project does.</h2>
+<p class="lead">Drag the sliders or tap a scenario. The profit, the cost breakdown and the comps chart below all move with you.</p>
+<div class="pre" id="pre"><button data-p="400000">Cautious · $400K</button><button data-p="425000">Working case · $425K</button><button data-p="450000">Strong finish · $450K</button><button class="rs" id="rs">Reset</button></div>
+<div class="card calc" style="margin-top:14px"><div>
+<div class="sm">Your assumptions</div>
+<label>Purchase price <b id="pv"></b></label><input id="p" type="range" min="290000" max="320000" step="2500" value="305000">
+<label>Renovation budget <b id="rv"></b></label><input id="r" type="range" min="60000" max="110000" step="2500" value="75000">
+<label>Target sale price <b id="vv"></b></label><input id="v" type="range" min="380000" max="470000" step="2500" value="425000">
+<label>Selling costs <b id="sv"></b></label><input id="s" type="range" min="5" max="8" step="0.5" value="7">
+<p style="font-size:12px;color:var(--mut);margin:14px 0 0">Buying costs fixed at $6,000. Before ownership costs, taxes and the value of your own labor.</p>
 </div><div>
-<div class="res"><span>Net after 7% selling costs</span><b id="n"></b></div>
-<div class="res"><span>Cash in (price + reno + $6K buying)</span><b id="ci"></b></div>
-<div style="padding-top:14px"><div class="sm">Modeled margin</div><div id="m" class="serif"></div>
-<div style="font-size:13px;color:var(--mut)">Before ownership costs, taxes and the value of owner labor.</div></div>
-</div></div>
+<div class="sm">Modeled profit</div><div id="m" class="serif" style="font-size:52px;line-height:1.1"></div><div id="short"></div>
+<div class="kpi">
+<div class="card"><div class="sm">Return on cash in</div><div class="big serif" id="roi"></div></div>
+<div class="card"><div class="sm">Break-even sale</div><div class="big serif" id="be"></div></div>
+<div class="card"><div class="sm">Cash in</div><div class="big serif" id="ci"></div></div>
+<div class="card"><div class="sm">Target $/sq ft</div><div class="big serif" id="psf"></div></div>
+</div></div></div>
+<div class="card" style="margin-top:14px"><div class="sm">Where the sale price goes</div>
+<div class="stk" id="stk"></div><div class="lg" id="lg"></div></div>
 </section>
 
 <section class="c" id="comps"><div class="sm">Market evidence</div>
 <h2 class="serif">What nearby homes have actually sold for.</h2>
-<p class="lead">Three closed village sales from September–October 2026. These are preliminary comparisons, not an appraisal.</p>
+<p class="lead">Three closed village sales from September to October 2026. Tap any one to open its Zillow page. <a class="zl" href="https://www.zillow.com/homedetails/323-East-St-Milford-MI-48381/24444033_zpid/" target="_blank" rel="noopener">The subject listing ↗</a></p>
 <div class="stats"><div class="card"><div class="sm">Layout</div><div class="big serif">3 bd · 1.5 ba</div><div class="sm">verify before pricing</div></div>
 <div class="card"><div class="sm">Above grade</div><div class="big serif">1,695 sq ft</div><div class="sm">+797 unfinished lower level</div></div>
 <div class="card"><div class="sm">Asking price</div><div class="big serif">$370,000</div><div class="sm">advertised 2,492 sq ft</div></div></div>
 <div class="tw"><table><tr><th>Property</th><th>Closed</th><th>Sale price</th><th>Size · beds/baths</th><th>$/sq ft</th><th>Why it matters</th></tr>
-<tr><td><b>319 Hickory St</b></td><td>Sep 25, 2026</td><td>$350,000</td><td>1,400 sq ft · 3 / 1.5</td><td>$250</td><td>1910 historic home with an updated kitchen. Lower price anchor. Public sites disagree on area.</td></tr>
-<tr><td><b>316 E Liberty St</b></td><td>Oct 14, 2026</td><td>$430,000</td><td>1,921 sq ft · 3 / 1.5</td><td>$224</td><td>1921 Craftsman, updated kitchen and mechanicals, larger home and garage. Strongest style reference.</td></tr>
-<tr><td><b>626 Union St</b></td><td>Sep 17, 2026</td><td>$440,000</td><td>2,164 sq ft reported · 4 / 1.5</td><td>$203</td><td>Extra bedroom and more area. Context near $440K, not a direct equal.</td></tr></table></div>
-<div class="card" style="margin-top:22px"><div class="sm">Price at a glance</div>
-<div class="br w"><span>Our cash offer</span><div class="trk"><i style="width:67.4%"></i></div><b>$300–310K</b></div><div class="br s"><span>Asking price</span><div class="trk"><i style="width:80.4%"></i></div><b>$370K</b></div><div class="br "><span>319 Hickory</span><div class="trk"><i style="width:76.1%"></i></div><b>$350K</b></div><div class="br "><span>316 E Liberty</span><div class="trk"><i style="width:93.5%"></i></div><b>$430K</b></div><div class="br "><span>626 Union</span><div class="trk"><i style="width:95.7%"></i></div><b>$440K</b></div><div class="br w"><span>Renovated, working</span><div class="trk"><i style="width:92.4%"></i></div><b>$425K</b></div>
-</div>
-<p class="lead" style="margin-top:22px;font-size:16px"><b>How to read this:</b> a finished, cohesive renovation could price above the Hickory sale, while Liberty and Union had size and feature advantages. $/sq ft uses each source’s reported area and is for context only. On 1,695 above-grade sq ft, the $425K working case is about $251/sq ft, at the top of this range, so it depends on finish quality and a verified size. Sales were checked on public listing sources on November 10, 2026. Agent verification of concessions, condition and area is still needed.</p>
+<tr class="lk" data-href="https://www.zillow.com/homedetails/319-Hickory-St-Milford-MI-48381/24444023_zpid/"><td><a class="zl" href="https://www.zillow.com/homedetails/319-Hickory-St-Milford-MI-48381/24444023_zpid/" target="_blank" rel="noopener"><b>319 Hickory St ↗</b></a><div class="sm" style="margin-top:4px">View on Zillow</div></td><td>Sep 25, 2026</td><td>$350,000</td><td>1,400 sq ft · 3 / 2</td><td>$250</td><td>1910 historic home with an updated kitchen. Lower price anchor.</td></tr>
+<tr class="lk" data-href="https://www.zillow.com/homedetails/316-E-Liberty-St-Milford-MI-48381/24444070_zpid/"><td><a class="zl" href="https://www.zillow.com/homedetails/316-E-Liberty-St-Milford-MI-48381/24444070_zpid/" target="_blank" rel="noopener"><b>316 E Liberty St ↗</b></a><div class="sm" style="margin-top:4px">View on Zillow</div></td><td>Oct 14, 2026</td><td>$430,000</td><td>1,921 sq ft · 3 / 2</td><td>$224</td><td>1921 Craftsman, updated kitchen and mechanicals, larger home and garage. Strongest style reference.</td></tr>
+<tr class="lk" data-href="https://www.zillow.com/homedetails/626-Union-St-Milford-MI-48381/24443869_zpid/"><td><a class="zl" href="https://www.zillow.com/homedetails/626-Union-St-Milford-MI-48381/24443869_zpid/" target="_blank" rel="noopener"><b>626 Union St ↗</b></a><div class="sm" style="margin-top:4px">View on Zillow</div></td><td>Sep 17, 2026</td><td>$440,000</td><td>2,164 sq ft · 4 / 2</td><td>$203</td><td>Extra bedroom and more area. Context near $440K, not a direct equal.</td></tr>
+</table></div>
+<div class="card" style="margin-top:22px"><div class="sm">Where your numbers land</div>
+<a class="br " href="https://www.zillow.com/homedetails/319-Hickory-St-Milford-MI-48381/24444023_zpid/" target="_blank" rel="noopener"><span>319 Hickory ↗</span><div class="trk"><i style="width:72.9%"></i></div><b>$350K</b></a><a class="br " href="https://www.zillow.com/homedetails/316-E-Liberty-St-Milford-MI-48381/24444070_zpid/" target="_blank" rel="noopener"><span>316 E Liberty ↗</span><div class="trk"><i style="width:89.6%"></i></div><b>$430K</b></a><a class="br " href="https://www.zillow.com/homedetails/626-Union-St-Milford-MI-48381/24443869_zpid/" target="_blank" rel="noopener"><span>626 Union ↗</span><div class="trk"><i style="width:91.7%"></i></div><b>$440K</b></a>
+<div class="br s"><span>Asking price</span><div class="trk"><i style="width:77.1%"></i></div><b>$370K</b></div><div class="br w"><span>Your purchase</span><div class="trk"><i id="bp" style="width:63.5%"></i></div><b id="bpl">$305K</b></div><div class="br w"><span>Your target sale</span><div class="trk"><i id="bt" style="width:88.5%"></i></div><b id="btl">$425K</b></div>
+<p id="vd"></p></div>
+<p class="lead" style="margin-top:20px;font-size:14px">Beds, baths and area are as shown on Zillow. Other sources list these homes at 1.5 baths, and Union's area is reported inconsistently, so $/sq ft is for context only. These are preliminary comparisons, not an appraisal. Sales were checked on November 10, 2026. Agent verification of concessions, condition and area is still needed.</p>
 </section>
 
 <section class="c"><div class="sm">The path forward</div>
@@ -185,9 +194,24 @@ af=1;$("ap").textContent="❚❚ Pause";let l=performance.now(),y=scrollY;const 
 const f=n=>{if(!af)return;y+=(n-l)/1000*sp;l=n;scrollTo(0,y);if(y>=end){stop();return}requestAnimationFrame(f)};requestAnimationFrame(f)}
 $("ap").onclick=auto;["wheel","touchstart","keydown"].forEach(e=>addEventListener(e,()=>{if(af)stop()},{passive:true}));
 $("go").onclick=()=>{scrollTo(0,fly.offsetTop);setTimeout(auto,300)};
-const f$=n=>(n<0?"−$":"$")+Math.abs(Math.round(n)).toLocaleString("en-US");
-function calc(){const p=+$("p").value,r=+$("r").value,v=+$("v").value,n=v*.93,ci=p+r+6000,m=n-ci;
-$("pv").textContent=f$(p);$("rv").textContent=f$(r);$("vv").textContent=f$(v);$("n").textContent=f$(n);$("ci").textContent=f$(ci);
-const e=$("m");e.textContent=f$(m);e.style.color=m<0?"var(--bad)":"var(--good)"}
-["p","r","v"].forEach(i=>$(i).addEventListener("input",calc));calc();
+const f$=n=>(n<0?"−$":"$")+Math.abs(Math.round(n)).toLocaleString("en-US"),K=n=>"$"+Math.round(n/1000)+"K",SQ=1695;
+function calc(){const p=+$("p").value,r=+$("r").value,v=+$("v").value,s=+$("s").value,ci=p+r+6000,sc=v*s/100,m=v-sc-ci,roi=m/ci*100,be=ci/(1-s/100),psf=v/SQ;
+$("pv").textContent=f$(p);$("rv").textContent=f$(r);$("vv").textContent=f$(v);$("sv").textContent=s.toFixed(1)+"%";
+const e=$("m");e.textContent=f$(m);e.style.color=m<0?"var(--bad)":"var(--good)";
+$("short").textContent=m<0?"Costs exceed the sale price by "+f$(-m)+".":"";
+const ro=$("roi");ro.textContent=roi.toFixed(1)+"%";ro.style.color=m<0?"var(--bad)":"var(--good)";
+$("be").textContent=f$(be);$("ci").textContent=f$(ci);$("psf").textContent="$"+Math.round(psf);
+const sg=[[p,"#8a9279","Purchase"],[r,"#ad7f52","Renovation"],[6000,"#c9b48f","Buying costs"],[sc,"#6b7a73","Selling costs"],[Math.max(0,m),"var(--good)","Profit"]],tot=sg.reduce((a,x)=>a+x[0],0);
+$("stk").innerHTML=sg.map(x=>'<i title="'+x[2]+' '+f$(x[0])+'" style="width:'+(x[0]/tot*100)+'%;background:'+x[1]+'"></i>').join("");
+$("lg").innerHTML=sg.map(x=>'<span style="--c:'+x[1]+'">'+x[2]+' '+f$(x[0])+'</span>').join("");
+$("bp").style.width=(p/480000*100)+"%";$("bpl").textContent=K(p);$("bt").style.width=(v/480000*100)+"%";$("btl").textContent=K(v);
+let w;if(v>440000)w="above every comp that sold";else if(v>430000)w="between the Liberty ($430K) and Union ($440K) sales";else if(v>350000)w="between the Hickory ($350K) and Liberty ($430K) sales";else w="below all three comps";
+let q=psf>250?" That is above the highest $/sq ft in the comp set ($250), so it leans on finish quality and a verified size.":psf>=240?" That is at the top of the comp set's $203–$250 range.":" That sits inside the comp set's $203–$250/sq ft range.";
+$("vd").textContent="A target of "+f$(v)+" is $"+Math.round(psf)+"/sq ft on 1,695 above-grade sq ft, "+w+"."+q;
+document.querySelectorAll("#pre button[data-p]").forEach(b=>b.classList.toggle("on",+b.dataset.p===v))}
+["p","r","v","s"].forEach(i=>$(i).addEventListener("input",calc));
+document.querySelectorAll("#pre button[data-p]").forEach(b=>b.onclick=()=>{$("v").value=b.dataset.p;calc()});
+$("rs").onclick=()=>{$("p").value=305000;$("r").value=75000;$("v").value=425000;$("s").value=7;calc()};
+document.querySelectorAll("tr.lk").forEach(r=>r.addEventListener("click",e=>{if(e.target.closest("a"))return;window.open(r.dataset.href,"_blank","noopener")}));
+calc();
 </script></body></html>
